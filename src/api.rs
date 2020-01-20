@@ -23,9 +23,9 @@ pub struct BookMarksApi {
 
 impl BookMarksApi {
 
-    pub fn new<P: AsRef<Path>>(input_path: Option<P>) -> Result<BookMarksApi, Error> {
+    pub fn new(input_path: Option<&Path>) -> Result<BookMarksApi, Error> {
         let path: PathBuf = if let Some(path) = input_path {
-            path.as_ref().to_owned()
+            path.to_owned()
         } else {
             default_file_path()?
         };
