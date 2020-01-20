@@ -18,7 +18,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        let api = BookMarksApi::new("db.sqlite").expect("Failed to create api");
+        let api = BookMarksApi::new(Some(":memory:")).expect("Failed to create api");
         println!("1: {:?}", api.all_tags());
         println!("2: {:?}", api.all_folders());
         println!("3: {:?}", api.all_bookmarks());

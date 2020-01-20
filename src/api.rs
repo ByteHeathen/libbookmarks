@@ -23,17 +23,29 @@ pub struct BookMarksApi {
 
 impl BookMarksApi {
 
-    pub fn new<P: AsRef<Path>>(path: P) -> Result<BookMarksApi, Error> {
-        let conn = SqliteConnection::establish(path.as_ref().to_str().unwrap())?;
-        embedded_migrations::run(&conn)?;
-        Ok(BookMarksApi {
-            path: path.as_ref().to_owned(),
-            conn
-        })
+    pub fn new<P: AsRef<Path>>(input_path: Option<P>) -> Result<BookMarksApi, Error> {
+        let path: PathBuf = if let Some(path) = input_path {
+            path.as_ref().to_owned()
+        } else {
+            default_file_path()?
+        };
+        match path.to_str() {
+            Some(string) => {
+                let conn = SqliteConnection::establish(string)?;
+                embedded_migrations::run(&conn)?;
+                Ok(BookMarksApi {
+                    conn,
+                    path
+                })
+            },
+            None => {
+                Err(Error::InvalidDatabasePath)
+            }
+        }
     }
 
-    pub fn database_path(&self) -> &Path {
-        &self.path
+    pub fn database_path(&self) -> PathBuf {
+        self.path.clone()
     }
 
     pub fn all_tags(&self) -> Result<Vec<Tag>, Error> {
@@ -98,4 +110,12 @@ impl BookMarksApi {
                 .execute(&self.conn)?;
         Ok(())
     }
+}
+
+fn default_file_path() -> Result<PathBuf, Error> {
+    use std::env::var;
+
+    let mut path = PathBuf::from(var("HOME")?);
+    path.push(".local/share/libbookmarks/bookmarks.db");
+    Ok(path)
 }
