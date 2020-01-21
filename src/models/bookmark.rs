@@ -1,9 +1,5 @@
+use crate::*;
 use crate::schema::bookmarks;
-use crate::BookMarksApi;
-use crate::models::Tag;
-use crate::models::Folder;
-use crate::models::BookMarkTagMap;
-use crate::models::NewBookMarkTagMap;
 
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;

@@ -1,3 +1,4 @@
 /target
 Cargo.lock
 db.sqlite
+test.db

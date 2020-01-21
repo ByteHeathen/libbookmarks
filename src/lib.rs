@@ -2,6 +2,7 @@
 #[macro_use] extern crate diesel_migrations;
 
 pub mod models;
+pub use self::models::*;
 
 pub mod schema;
 

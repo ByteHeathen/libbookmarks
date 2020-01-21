@@ -7,7 +7,7 @@ CREATE TABLE tags (
 
 CREATE TABLE folders (
   id INTEGER PRIMARY KEY,
-  label VARCHAR(256) UNIQUE,
+  label VARCHAR(256),
   parent INTEGER,
   FOREIGN KEY(parent) REFERENCES folders(id)
 );

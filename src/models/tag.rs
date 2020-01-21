@@ -1,7 +1,7 @@
+use crate::BookMark;
 use crate::BookMarksApi;
 use crate::schema::tags;
 use crate::schema::bookmark_tag_map;
-use crate::models::BookMark;
 
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;

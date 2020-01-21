@@ -3,13 +3,7 @@ use diesel::SqliteConnection;
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;
 
-use crate::Error;
-use crate::models::Tag;
-use crate::models::NewTag;
-use crate::models::Folder;
-use crate::models::BookMark;
-use crate::models::NewFolder;
-use crate::models::NewBookMark;
+use crate::*;
 
 use std::path::Path;
 use std::path::PathBuf;

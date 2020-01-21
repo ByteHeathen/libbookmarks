@@ -1,5 +1,5 @@
 use crate::schema::folders;
-use crate::models::BookMark;
+use crate::BookMark;
 use crate::BookMarksApi;
 
 use diesel::RunQueryDsl;
