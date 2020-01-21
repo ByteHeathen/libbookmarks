@@ -2,14 +2,8 @@ extern crate libbookmarks;
 
 use libbookmarks::*;
 
-use std::path::PathBuf;
-
 fn main() -> Result<(), Error>{
-    let path = PathBuf::from("test.db");
-    if path.exists() {
-        std::fs::remove_file(&path)?;
-    }
-    let mut api = BookMarksApi::new(Some(&path))?;
+    let api = BookMarksApi::new(Some("test.db".into()))?;
 
     let new_tag = NewTag { label: "Boring".into(), color: None };
     api.create_tag(new_tag)?;
