@@ -5,7 +5,6 @@ use diesel::RunQueryDsl;
 
 use crate::*;
 
-use std::path::Path;
 use std::path::PathBuf;
 
 embed_migrations!("migrations/");
@@ -17,25 +16,18 @@ pub struct BookMarksApi {
 
 impl BookMarksApi {
 
-    pub fn new(input_path: Option<&Path>) -> Result<BookMarksApi, Error> {
-        let path: PathBuf = if let Some(path) = input_path {
-            path.to_owned()
+    pub fn new(input_path: Option<String>) -> Result<BookMarksApi, Error> {
+        let path = if let Some(path) = input_path {
+            path
         } else {
             default_file_path()?
         };
-        match path.to_str() {
-            Some(string) => {
-                let conn = SqliteConnection::establish(string)?;
-                embedded_migrations::run(&conn)?;
-                Ok(BookMarksApi {
-                    conn,
-                    path
-                })
-            },
-            None => {
-                Err(Error::InvalidDatabasePath)
-            }
-        }
+        let conn = SqliteConnection::establish(&path)?;
+        embedded_migrations::run(&conn)?;
+        Ok(BookMarksApi {
+            conn,
+            path: PathBuf::from(path)
+        })
     }
 
     pub fn database_path(&self) -> PathBuf {
@@ -106,10 +98,17 @@ impl BookMarksApi {
     }
 }
 
-fn default_file_path() -> Result<PathBuf, Error> {
+fn default_file_path() -> Result<String, Error> {
     use std::env::var;
 
     let mut path = PathBuf::from(var("HOME")?);
-    path.push(".local/share/libbookmarks/bookmarks.db");
-    Ok(path)
+    path.push(".local/share/libbookmarks");
+    if !path.exists() {
+        std::fs::create_dir(&path)?;
+    }
+    path.push("bookmarks.db");
+    if !path.exists() {
+        std::fs::File::create(&path)?;
+    }
+    Ok(path.to_str().unwrap().to_owned())
 }

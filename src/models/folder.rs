@@ -3,7 +3,7 @@ use crate::BookMark;
 use crate::BookMarksApi;
 
 use diesel::RunQueryDsl;
-use diesel::result::Error;
+use crate::Error;
 use diesel::ExpressionMethods;
 use diesel::QueryDsl;
 

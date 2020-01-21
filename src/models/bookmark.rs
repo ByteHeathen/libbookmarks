@@ -4,7 +4,7 @@ use crate::schema::bookmarks;
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;
 use diesel::ExpressionMethods;
-use diesel::result::Error;
+use crate::Error;
 
 #[derive(Debug, Identifiable, Queryable, AsChangeset)]
 #[table_name = "bookmarks"]

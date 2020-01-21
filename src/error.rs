@@ -15,6 +15,26 @@ pub enum Error {
     Migration(RunMigrationsError)
 }
 
+#[cfg(feature = "pyo3")]
+use pyo3::exceptions;
+
+#[cfg(feature = "pyo3")]
+use pyo3::PyErr;
+
+#[cfg(feature = "pyo3")]
+impl From<Error> for pyo3::PyErr {
+    fn from(err: Error) -> PyErr {
+        match err {
+            Error::InvalidDatabasePath => exceptions::FileNotFoundError::py_err(format!("{:?}", err)),
+            Error::Io(err) => exceptions::IOError::py_err(format!("{:?}", err)),
+            Error::Environment(err) => exceptions::EnvironmentError::py_err(format!("{:?}", err)),
+            Error::Connection(err) => exceptions::ConnectionError::py_err(format!("{:?}", err)),
+            Error::Diesel(err) => exceptions::IOError::py_err(format!("{:?}", err)),
+            Error::Migration(err) => exceptions::IOError::py_err(format!("{:?}", err))
+        }
+    }
+}
+
 macro_rules! impl_simple_from {
 
     ($err:tt, $variant:tt) => {
