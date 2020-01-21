@@ -14,8 +14,8 @@ CREATE TABLE folders (
 
 CREATE TABLE bookmarks (
   id INTEGER PRIMARY KEY,
-  url TEXT NOT NULL,
-  label VARCHAR(256) UNIQUE,
+  url TEXT NOT NULL UNIQUE,
+  label VARCHAR(256),
   folder INTEGER,
   FOREIGN KEY (folder) REFERENCES folder(id)
 );

@@ -55,6 +55,14 @@ impl BookMarksApi {
         Ok(tags::table.find(tag).get_result(&self.conn)?)
     }
 
+    /// Remove a particular tag by id. Will return Error
+    /// if not found.
+    pub fn remove_tag(&self, id: i32) -> Result<(), Error> {
+        use crate::schema::tags;
+        diesel::delete(tags::table.find(id)).execute(&self.conn)?;
+        Ok(())
+    }
+
     /// Create a new tag from a `NewTag` object.
     pub fn create_tag(&self, tag: NewTag) -> Result<(), Error> {
         use crate::schema::tags;
@@ -78,6 +86,14 @@ impl BookMarksApi {
         use crate::schema::folders;
 
         Ok(folders::table.find(id).first(&self.conn)?)
+    }
+
+    /// Remove a particular folder by id. Will return Error
+    /// if not found.
+    pub fn remove_folder(&self, id: i32) -> Result<(), Error> {
+        use crate::schema::folders;
+        diesel::delete(folders::table.find(id)).execute(&self.conn)?;
+        Ok(())
     }
 
     /// Create new folder from a `NewFolder` struct.
@@ -104,6 +120,14 @@ impl BookMarksApi {
         use crate::schema::bookmarks;
 
         Ok(bookmarks::table.find(id).first(&self.conn)?)
+    }
+
+    /// Remove a particular bookmark by id. Will return Error
+    /// if not found.
+    pub fn remove_bookmark(&self, id: i32) -> Result<(), Error> {
+        use crate::schema::bookmarks;
+        diesel::delete(bookmarks::table.find(id)).execute(&self.conn)?;
+        Ok(())
     }
 
     /// Create a new bookmark from the `NewBookMark` struct.
