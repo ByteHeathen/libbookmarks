@@ -9,6 +9,8 @@ use std::path::PathBuf;
 
 embed_migrations!("migrations/");
 
+/// Api structure for interacting with
+/// libbookmarks
 pub struct BookMarksApi {
     path: PathBuf,
     pub(crate) conn: SqliteConnection
@@ -16,6 +18,8 @@ pub struct BookMarksApi {
 
 impl BookMarksApi {
 
+    /// Create a new Api Object. If `input_path` is None
+    /// `$HOME/.local/share/libbookmarks/bookmarks.db` is used.
     pub fn new(input_path: Option<String>) -> Result<BookMarksApi, Error> {
         let path = if let Some(path) = input_path {
             path
@@ -30,22 +34,28 @@ impl BookMarksApi {
         })
     }
 
+    /// Get the database path that is in use.
     pub fn database_path(&self) -> PathBuf {
         self.path.clone()
     }
 
+    /// List all BookMark tags currently tracted by
+    /// libbookmarks.
     pub fn all_tags(&self) -> Result<Vec<Tag>, Error> {
         use crate::schema::tags;
 
         Ok(tags::table.load(&self.conn)?)
     }
 
+    /// Get a particular tag by id. Will return Error
+    /// if not found.
     pub fn get_tag(&self, tag: i32) -> Result<Tag, Error> {
         use crate::schema::tags;
 
         Ok(tags::table.find(tag).get_result(&self.conn)?)
     }
 
+    /// Create a new tag from a `NewTag` object.
     pub fn create_tag(&self, tag: NewTag) -> Result<(), Error> {
         use crate::schema::tags;
 
@@ -55,18 +65,22 @@ impl BookMarksApi {
         Ok(())
     }
 
+    /// List all folders tracted by libbookmarks.
     pub fn all_folders(&self) -> Result<Vec<Folder>, Error> {
         use crate::schema::folders;
 
         Ok(folders::table.load(&self.conn)?)
     }
 
+    /// Get a particular folder by id. Will return Error
+    /// if not found.
     pub fn get_folder(&self, id: i32) -> Result<Folder, Error> {
         use crate::schema::folders;
 
         Ok(folders::table.find(id).first(&self.conn)?)
     }
 
+    /// Create new folder from a `NewFolder` struct.
     pub fn create_folder(&self, folder: NewFolder) -> Result<(), Error> {
         use crate::schema::folders;
 
@@ -76,18 +90,23 @@ impl BookMarksApi {
         Ok(())
     }
 
+    /// List all bookmarks currently tracted by
+    /// libbookmarks.
     pub fn all_bookmarks(&self) -> Result<Vec<BookMark>, Error> {
         use crate::schema::bookmarks;
 
         Ok(bookmarks::table.load(&self.conn)?)
     }
 
+    /// Get a particular bookmark by id. Will return Error
+    /// if not found.
     pub fn get_bookmark(&self, id: i32) -> Result<BookMark, Error> {
         use crate::schema::bookmarks;
 
         Ok(bookmarks::table.find(id).first(&self.conn)?)
     }
 
+    /// Create a new bookmark from the `NewBookMark` struct.
     pub fn create_bookmark(&self, bkm: NewBookMark) -> Result<(), Error> {
         use crate::schema::bookmarks;
 
@@ -98,6 +117,9 @@ impl BookMarksApi {
     }
 }
 
+// Return the default file path used by libbookmarks.
+// This will create the file and parent directory
+// if none exists.
 fn default_file_path() -> Result<String, Error> {
     use std::env::var;
 

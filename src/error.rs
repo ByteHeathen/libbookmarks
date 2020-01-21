@@ -5,6 +5,7 @@ use diesel_migrations::RunMigrationsError;
 use std::env::VarError;
 use std::io::Error as IoError;
 
+/// Error used by libbookmarks.
 #[derive(Debug)]
 pub enum Error {
     InvalidDatabasePath,
