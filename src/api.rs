@@ -2,6 +2,7 @@ use diesel::Connection;
 use diesel::SqliteConnection;
 use diesel::QueryDsl;
 use diesel::RunQueryDsl;
+use diesel::ExpressionMethods;
 
 use crate::*;
 
@@ -138,6 +139,13 @@ impl BookMarksApi {
                 .values(&bkm)
                 .execute(&self.conn)?;
         Ok(())
+    }
+
+    /// List all root folders.
+    pub fn root_folders(&self) -> Result<Vec<Folder>, Error> {
+        use crate::schema::folders::dsl::*;
+
+        Ok(folders.filter(parent.eq::<Option<i32>>(None)).load(&self.conn)?)
     }
 }
 
