@@ -8,7 +8,7 @@ fn main() -> Result<(), Error>{
     let new_tag = NewTag { label: "Boring".into(), color: None };
     api.create_tag(new_tag)?;
 
-    let new_bookmark = NewBookMark { url: "example.com".into(), label: None, folder: None };
+    let new_bookmark = NewBookMark::new("example.com");
     api.create_bookmark(new_bookmark)?;
     let bk = api.get_bookmark(1)?;
     bk.assign_tag(&api, 1)?;

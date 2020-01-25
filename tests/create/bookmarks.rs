@@ -5,7 +5,8 @@ fn create_new_no_label_no_folder() {
     let new_bookmark = NewBookMark {
         url: "example.com".into(),
         label: None,
-        folder: None
+        folder: None,
+        starred: false
     };
     let api = BookMarksApi::new(Some(":memory:".to_string())).expect("Failed to create bookmarks api");
     api.create_bookmark(new_bookmark).expect("Failed to create new folder");
@@ -26,7 +27,8 @@ fn create_new_label_no_folder() {
     let new_bookmark = NewBookMark {
         url: "example.com".into(),
         label: Some("Some Label".into()),
-        folder: None
+        folder: None,
+        starred: false
     };
     let api = BookMarksApi::new(Some(":memory:".to_string())).expect("Failed to create bookmarks api");
     api.create_bookmark(new_bookmark).expect("Failed to create new folder");
@@ -46,12 +48,14 @@ fn create_new_no_label_folder() {
     let new_bookmark1 = NewBookMark {
         url: "example.com".into(),
         label: Some("Some Label".into()),
-        folder: None
+        folder: None,
+        starred: false
     };
     let new_bookmark2 = NewBookMark {
         url: "sub.example.com".into(),
         label: None,
-        folder: Some(1)
+        folder: Some(1),
+        starred: false
     };
     let api = BookMarksApi::new(Some(":memory:".to_string())).expect("Failed to create bookmarks api");
     api.create_bookmark(new_bookmark1).expect("Failed to create new bookmark");
@@ -73,12 +77,14 @@ fn create_new_label_folder() {
     let new_bookmark1 = NewBookMark {
         url: "example.com".into(),
         label: Some("Some Label".into()),
-        folder: None
+        folder: None,
+        starred: false
     };
     let new_bookmark2 = NewBookMark {
         url: "other.example.com".into(),
         label: Some("Some Label".into()),
-        folder: Some(1)
+        folder: Some(1),
+        starred: false
     };
     let api = BookMarksApi::new(Some(":memory:".to_string())).expect("Failed to create bookmarks api");
     api.create_bookmark(new_bookmark1).expect("Failed to create new bookmark");

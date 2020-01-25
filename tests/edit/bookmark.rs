@@ -5,7 +5,8 @@ fn edit_bookmark_label() {
     let new_bookmark = NewBookMark {
         url: "example.com".into(),
         label: None,
-        folder: None
+        folder: None,
+        starred: false
     };
     let api = BookMarksApi::new(Some(":memory:".to_string())).expect("Failed to create bookmarks api");
     api.create_bookmark(new_bookmark).expect("Failed to create new Bookmark");
@@ -33,7 +34,8 @@ fn edit_bookmark_folder() {
     let new_bookmark = NewBookMark {
         url: "some.url.com".to_string(),
         folder: None,
-        label: None
+        label: None,
+        starred: false
     };
     let api = BookMarksApi::new(Some(":memory:".to_string())).expect("Failed to create bookmarks api");
     api.create_bookmark(new_bookmark).expect("Failed to create new bookmark");

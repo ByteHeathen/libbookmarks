@@ -20,6 +20,7 @@ table! {
         url -> Varchar,
         label -> Nullable<Varchar>,
         folder -> Nullable<Integer>,
+        starred -> Bool,
     }
 }
 

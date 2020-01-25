@@ -19,7 +19,9 @@ pub struct BookMark {
     /// The label used when displaying this bookmark.
     pub label: Option<String>,
     /// The id of the folder this bookmark belongs to.
-    pub folder: Option<i32>
+    pub folder: Option<i32>,
+    /// Whether this BookMark is `starred` in the ui.
+    pub starred: bool
 }
 
 impl BookMark {
@@ -89,5 +91,19 @@ pub struct NewBookMark {
     /// The label used when displaying this bookmark.
     pub label: Option<String>,
     /// The folder this bookmark belongs to.
-    pub folder: Option<i32>
+    pub folder: Option<i32>,
+    /// Whether this BookMark should be Starred in the UI.
+    pub starred: bool
+}
+
+impl NewBookMark {
+
+    pub fn new<S: Into<String>>(url: S) -> NewBookMark {
+        NewBookMark {
+            url: url.into(),
+            label: None,
+            folder: None,
+            starred: false
+        }
+    }
 }
