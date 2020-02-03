@@ -14,7 +14,7 @@ CREATE TABLE folders (
 
 CREATE TABLE bookmarks (
   id INTEGER PRIMARY KEY,
-  url TEXT NOT NULL UNIQUE,
+  url TEXT NOT NULL,
   label VARCHAR(256),
   folder INTEGER,
   starred BOOLEAN NOT NULL DEFAULT FALSE,
