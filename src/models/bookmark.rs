@@ -26,6 +26,34 @@ pub struct BookMark {
 
 impl BookMark {
 
+    /// Return a bookmark with the given `url_req`.
+    pub fn find_url(api: &BookMarksApi, url_req: &str) -> Result<Vec<BookMark>, Error> {
+        use crate::schema::bookmarks::dsl::*;
+
+        Ok(bookmarks.filter(url.eq(&url_req)).get_results(&api.conn)?)
+    }
+
+    /// Return any bookmarks with the given label.
+    pub fn find_label(api: &BookMarksApi, label_req: &str) -> Result<Vec<BookMark>, Error> {
+        use crate::schema::bookmarks::dsl::*;
+
+        Ok(bookmarks.filter(label.eq(&label_req)).get_results(&api.conn)?)
+    }
+
+    /// Return any bookmarks with the given folder.
+    pub fn find_folder(api: &BookMarksApi, folder_req: i32) -> Result<Vec<BookMark>, Error> {
+        use crate::schema::bookmarks::dsl::*;
+
+        Ok(bookmarks.filter(folder.eq(&Some(folder_req))).get_results(&api.conn)?)
+    }
+
+    /// Return any bookmarks that are starred.
+    pub fn find_starred(api: &BookMarksApi, starred_req: bool) -> Result<Vec<BookMark>, Error> {
+        use crate::schema::bookmarks::dsl::*;
+
+        Ok(bookmarks.filter(starred.eq(&starred_req)).get_results(&api.conn)?)
+    }
+
     /// Return a list of all the tags belonging to this bookmark.
     pub fn tags(&self, api: &BookMarksApi) -> Result<Vec<Tag>, Error> {
         use crate::schema::bookmark_tag_map::dsl::*;
