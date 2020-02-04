@@ -89,6 +89,13 @@ impl BookMarksApi {
         Ok(folders::table.find(id).first(&self.conn)?)
     }
 
+    // Get all bookmarks for a particular Folder.
+    pub fn get_folder_bookmarks(&self, id: i32) -> Result<Vec<BookMark>, Error> {
+        use crate::schema::bookmarks::dsl;
+
+        Ok(dsl::bookmarks.filter(dsl::folder.eq(Some(id))).load(&self.conn)?)
+    }
+
     /// Get all children of a particular folder by id. Will return Error
     /// if not found.
     pub fn get_folder_children(&self, id: i32) -> Result<Vec<Folder>, Error> {
