@@ -54,6 +54,13 @@ impl BookMark {
         Ok(bookmarks.filter(starred.eq(&starred_req)).get_results(&api.conn)?)
     }
 
+    /// Return any bookmarks without a folder.
+    pub fn find_unfoldered(api: &BookMarksApi) -> Result<Vec<BookMark>, Error> {
+        use crate::schema::bookmarks::dsl::*;
+
+        Ok(bookmarks.filter(folder.is_null()).load(&api.conn)?)
+    }
+
     /// Return a list of all the tags belonging to this bookmark.
     pub fn tags(&self, api: &BookMarksApi) -> Result<Vec<Tag>, Error> {
         use crate::schema::bookmark_tag_map::dsl::*;
