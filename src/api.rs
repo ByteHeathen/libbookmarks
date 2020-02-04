@@ -89,6 +89,14 @@ impl BookMarksApi {
         Ok(folders::table.find(id).first(&self.conn)?)
     }
 
+    /// Get all children of a particular folder by id. Will return Error
+    /// if not found.
+    pub fn get_folder_children(&self, id: i32) -> Result<Vec<Folder>, Error> {
+        use crate::schema::folders;
+
+        Ok(folders::table.filter(folders::dsl::parent.eq(Some(id))).load(&self.conn)?)
+    }
+
     /// Remove a particular folder by id. Will return Error
     /// if not found.
     pub fn remove_folder(&self, id: i32) -> Result<(), Error> {
