@@ -145,7 +145,7 @@ impl BookMarksApi {
     pub fn root_folders(&self) -> Result<Vec<Folder>, Error> {
         use crate::schema::folders::dsl::*;
 
-        Ok(folders.filter(parent.eq::<Option<i32>>(None)).load(&self.conn)?)
+        Ok(folders.filter(parent.is_null()).load(&self.conn)?)
     }
 }
 
