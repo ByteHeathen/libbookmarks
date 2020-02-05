@@ -155,7 +155,7 @@ impl BookMarksApi {
                 .values(&bkm)
                 .execute(&self.conn)?;
         let bk = bookmarks::table
-            .order(dsl::id.asc())
+            .order(dsl::id.desc())
             .limit(1)
             .load::<BookMark>(&self.conn)?
             .remove(0);
