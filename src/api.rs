@@ -154,7 +154,12 @@ impl BookMarksApi {
         diesel::insert_into(bookmarks::table)
                 .values(&bkm)
                 .execute(&self.conn)?;
-        Ok(bookmarks::table.order(dsl::id.desc()).limit(1).load::<BookMark>(&self.conn)?.remove(0))
+        let bk = bookmarks::table
+            .order(dsl::id.asc())
+            .limit(1)
+            .load::<BookMark>(&self.conn)?
+            .remove(0);
+        Ok(bk)
     }
 
     /// List all root folders.
