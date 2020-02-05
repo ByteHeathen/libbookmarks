@@ -147,13 +147,14 @@ impl BookMarksApi {
     }
 
     /// Create a new bookmark from the `NewBookMark` struct.
-    pub fn create_bookmark(&self, bkm: NewBookMark) -> Result<(), Error> {
+    pub fn create_bookmark(&self, bkm: NewBookMark) -> Result<BookMark, Error> {
         use crate::schema::bookmarks;
+        use crate::schema::bookmarks::dsl;
 
         diesel::insert_into(bookmarks::table)
                 .values(&bkm)
                 .execute(&self.conn)?;
-        Ok(())
+        Ok(bookmarks::table.order(dsl::id.desc()).limit(1).load::<BookMark>(&self.conn)?.remove(0))
     }
 
     /// List all root folders.
